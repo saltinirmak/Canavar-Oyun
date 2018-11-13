@@ -16,7 +16,8 @@ new Vue({
             heal_up : " Can Arttı ",
             give_up : "Oyuncu Pes Etti : "
         },
-
+        player_danger : "green",
+        monster_danger: "green"
     },
     methods: {
         start_game: function() {
@@ -63,9 +64,11 @@ new Vue({
                 this.player_heal= 0;
                 if (confirm("Oyunu Kaybettin! Tekrar Oynamak İster Misin?"))
                 {
+                    this.player_danger = "green";
                     this.player_heal = 100;
                     this.monster_heal = 100;
                     this.logs = [];
+
                 }
 
             }
@@ -74,6 +77,16 @@ new Vue({
                 this.player_heal = 100;
             }
 
+            if (this.player_heal >50) {
+                this.player_danger ="green";
+            }
+            if ( this.player_heal > 35 && this.player_heal <50 ) {
+                this.player_danger = "orange";
+            }
+
+            if ( this.player_heal <= 35  ) {
+                this.player_danger = "red";
+            }
         },
         monster_heal : function(value) {
             if (value <= 0)
@@ -81,23 +94,37 @@ new Vue({
                 this.monster_heal= 0;
                 if (confirm("Oyunu Kazandın! Tekrar Oynamak İster Misin?"))
                 {
+                    this.monster_danger = "green"
                     this.player_heal = 100;
                     this.monster_heal = 100;
                     this.logs = [];
+
                 }
 
+            }
+            if (this.monster_heal >50) {
+                this.monster_danger ="green";
+            }
+            if ( this.monster_heal > 35 && this.monster_heal <50 ) {
+                this.monster_danger = "orange";
+            }
+
+            if ( this.monster_heal <= 35  ) {
+                this.monster_danger = "red";
             }
         },
     },
     computed: {
         player_progress : function () {
             return{
-                width: this.player_heal + "%"
+                width: this.player_heal + "%",
+                backgroundColor: this.player_danger,
             }
         },
         monster_progress : function () {
             return{
-                width: this.monster_heal + "%"
+                width: this.monster_heal + "%",
+                backgroundColor: this.monster_danger
             }
         }
     }
